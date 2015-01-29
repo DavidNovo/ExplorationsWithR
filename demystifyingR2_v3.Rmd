@@ -24,13 +24,13 @@ Subset the data so that you create a new data frame that contains
 cars that get 23 or more mpg (miles per gallon). Save it to a new data
 frame called efficient.
 ```{r}
-
+efficient <- subset(mtcars, mtcars$mpg >= 23)
 ```
 
 3. How many cars get more than 23 mpg? Use one of the commands you
 learned in the demystifying.R to answer this question.
 ```{r}
-
+nrow(efficient)
 ```
 
 4. We can also use logical operators to find out which car(s) get greater
@@ -66,12 +66,14 @@ Now you try some.
 6. Print the cars that have a 1/4 mile time (qsec) less than or equal to
 16.90 seconds to the console.
 ```{r}
-
+subset(mtcars, qsec <= 16.90)
 ```
 
 7. Save the subset of cars that weigh under 2000 pounds (weight is measured in lb/1000) to a variable called lightCars. Print the numbers of cars and the subset to the console.
 ```{r}
-
+lightCars <- subset(mtcars, wt < 2.000)
+lightCars
+nrow(lightCars)
 ```
 
 8. You can also create new variables in a data frame. Let's say you wanted
@@ -100,10 +102,11 @@ mtcars$year <- c(1973, 1974)
 ```
 
 Open the table of values to see what values year takes on.
+This sequence assigns 1973 to the first instance of year; then 1974 to the second instance.  This pattern is repeated for all rows in the data frame.
 
 Drop the year variable from the data set.
 ```{r}
-
+mtcars <- subset(mtcars, select =-year)
 ```
 
 
@@ -126,6 +129,14 @@ cond <- mtcars$wt > 3.5
 mtcars$weight_class <- ifelse(cond, 'heavy', mtcars$weight_class)
 mtcars$weight_class
 ```
+Creating a boolean flag
+use this code: cond <- mtcars$wt < 3
+if mtcars$wt is less than 3, the value of TRUE is assigned to vector cond; 
+else the value of FALSE is assigned to the vectoro cond.
+
+mtcars$weight_class <- ifelse(cond, 'light', 'average')
+This code uses ifelse.  If the cond it TRUE, 'light' is assigned
+to the weight_class variable; else 'average' is assigned to the weight_class variable.
 
 You have some variables in your workspace or environment like 'cond' and
 efficient. You want to be careful that you don't bring in too much data
@@ -144,8 +155,8 @@ You'll have the opportunity to create one Rmd file for the final project in
 this class and submit the Rmd file and knitted output (or HTML file). You'll need the knitr package to do that so let's install that now. **Uncomment** the follownig two lines of code and run them.
 
 ```{r}
-# install.packages('knitr', dependencies = T)
-# library(knitr)
+#install.packages('knitr', dependencies = T)
+#library(knitr)
 ```
 
 Once you've installed knitr, **comment** out the two lines of code above.
@@ -159,7 +170,7 @@ answer a question to continue on in Lesson 2.
 
 Which car(s) have an mpg (miles per gallon) greater than or equal to 30
 OR hp (horsepower) less than 60? Create an R chunk of code to answer the question.
-
+subset(mtcars, mtcars$mpg >= 30 | mtcars$hp < 60 )
 
 
 Once you have the answer, go the [Udacity website](https://www.udacity.com/course/viewer#!/c-ud651/l-729069797/e-804129319/m-811719066) to continue with Lesson 2.
