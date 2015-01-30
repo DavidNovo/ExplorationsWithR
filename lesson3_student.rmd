@@ -5,13 +5,19 @@ Lesson 3
 
 ### What to Do First?
 Notes:
-
+This lesson explores analysis with one variable in a data set.  How does one varialbe change in a data set?  How to represent these changes in a graqph?  Other questons answered.
 ***
 
 ### Pseudo-Facebook User Data
 Notes:
-
+other way to load data from the file, use read.delim() function.  This function assumes that the tab character is the seperator between values and the period is the decimal character.
 ```{r Pseudo-Facebook User Data}
+getwd()
+list.files()
+
+facebookData <- read.csv('pseudo_facebook.tsv', sep='\t')
+
+facebookData2 <- read.delim('pseudo_facebook.tsv')
 
 ```
 
@@ -21,15 +27,23 @@ Notes:
 Notes:
 
 ```{r Histogram of Users\' Birthdays}
-install.packages('ggplot2')
-library(ggplot2)
+
+
+# list the names of variables
+names(facebookData2)
+# now plot it, make sure the library() command i run first...
+qplot(x = dob_day, data = facebookData2) +
+  scale_x_discrete(breaks=1:31)
+
 ```
 
 ***
 
 #### What are some things that you notice about this histogram?
 Response:
+There are a lot of birthdaysa on the first of the month.  This seems very unusual.  Maybe the default for one's birthday is the first of the month selected?  Could be...
 
+Fewer people born on the 31th...expected not all months have 31 days.
 ***
 
 ### Moira's Investigation
@@ -59,8 +73,16 @@ Notes:
 ***
 ### Faceting
 Notes:
+faceting means seperating the data using another variable that is not the variable under investigation,
 
+Here is the problem faceting solves:
+You want to do split up your data by one or more variables and plot the subsets of data together.
+
+ncol = 3 means the number of clolumns 
 ```{r Faceting}
+qplot(x = dob_day, data = facebookData2) +
+  scale_x_discrete(breaks=1:31) +
+  facet_wrap(~dob_month, ncol=3)
 
 ```
 
