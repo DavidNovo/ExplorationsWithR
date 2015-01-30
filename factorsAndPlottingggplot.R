@@ -30,3 +30,12 @@ library(ggplot2)
 
 
 qplot(data=reddit, x= age.range)
+'''
+The graph does not order the factors in the x-axis
+'
+
+# Let try to order them
+
+qplot(data=reddit, x= ordered(age.range,level=c("Under 18","18-24","25-34","35-44","45-54","55-64","65 or Above")))
+
+
