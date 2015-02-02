@@ -32,6 +32,7 @@ Notes:
 # list the names of variables
 names(facebookData2)
 # now plot it, make sure the library() command i run first...
+library(ggplot2)
 qplot(x = dob_day, data = facebookData2) +
   scale_x_discrete(breaks=1:31)
 
@@ -48,6 +49,21 @@ Fewer people born on the 31th...expected not all months have 31 days.
 
 ### Moira's Investigation
 Notes:
+outliers can be extreme cases.  Define extreme in context of rest of data.
+Outlier to one data swet can be normal for another.
+
+histogram axis can should be adjusted to show variations in data
+  good to remove outliers first
+
+Outliers, what can they be??:
+  1. good data bout an exterme case
+  2. bad data azbout an extreme case
+  3. bad data about a non-extreme case
+  
+What is bad data?
+  The system under study does not allow values that high/low?
+  The system under study derives this data from other data, and that bada is bad.
+  
 
 ***
 
@@ -93,27 +109,53 @@ Response:
 
 ### Be Skeptical - Outliers and Anomalies
 Notes:
+Notes:
+outliers can be extreme cases.  Define extreme in context of rest of data.
+Outlier to one data swet can be normal for another.
+
+histogram axis can should be adjusted to show variations in data
+  good to remove outliers first
+
+Outliers, what can they be??:
+  1. good data bout an exterme case
+  2. bad data azbout an extreme case
+  3. bad data about a non-extreme case
+  
 
 ***
 
 ### Moira's Outlier
 Notes:
+What is bad data?
+  The system under study does not allow values that high/low?
+  The system under study derives this data from other data, and that bada is bad.
 #### Which case do you think applies to Moira’s outlier?
 Response:
+Bad data about an exterme case.  The system under study does not allow people to have more than 5,000 friends.
 
 ***
 
 ### Friend Count
 Notes:
+friend is represented by int
+A lot of them...
 
 #### What code would you enter to create a histogram of friend counts?
 
 ```{r Friend Count}
-
+names(facebookData2)
+# now plot it, make sure the library() command i run first...
+library(ggplot2)
+qplot(x = friend_count, data = facebookData2) +
+  scale_x_discrete(breaks=1:5000)
 ```
 
 #### How is this plot similar to Moira's first plot?
 Response:
+The histogram is so heavily weighted to ward the low end, it is hard to distinguish individual values.  All mashed together...not clear.
+
+An example of long-tail data.
+
 
 ***
 
@@ -121,31 +163,59 @@ Response:
 Notes:
 
 ```{r Limiting the Axes}
+qplot(x = friend_count, data = facebookData2,xlim=c(0,1000))
 
+# another way, same histogram as before
+qplot(x = friend_count, data = facebookData2,xlim=c(0,1000))
+    scale_x_discrete(breaks=1:100)
+
+# third way, this uses layers, after the + sign
+qplot(x = friend_count, data = facebookData2) +
+  scale_x_continuous(limits = c(0, 1000))
 ```
 
 ### Exploring with Bin Width
 Notes:
+What is bin width?  Threa the x-axix as a series of bins, each values on that axis contains items, guesses, for that values of x.  
 
+Each value on the x-asix is a bucket containning positives, values, items.  The y-axis is how many items are in each x-axis bucket
 ***
 
 ### Adjusting the Bin Width
 Notes:
+Take a look at scale_x_continuous the parameters are:
+  1. limits -> what is the range of allowed x values?
+  2. breaks -> I am going from 0 to 1000, stepping every 50 units
+  
+when writing R code, the indenting is very important, like Python.
 
+Also remember the + signs, and the tilde
 ### Faceting Friend Count
 ```{r Faceting Friend Count}
 # What code would you add to create a facet the histogram by gender?
 # Add it to the code below.
-qplot(x = friend_count, data = pf, binwidth = 10) +
+qplot(x = friend_count, data = facebookData, binwidth = 10) +
   scale_x_continuous(limits = c(0, 1000),
-                     breaks = seq(0, 1000, 50))
+                     breaks = seq(0, 1000, 50)) +
+  # this is my added coded
+  facet_wrap(~gender, ncol=1) 
+
+
+
+
+
 ```
 
 ***
 
 ### Omitting NA Values
 Notes:
-
+Two ways, na wrapper and by subset
+  1. by subset -> data = subset(pf, !is.na(gender))
+        subset(dataset, condition)
+  2. by na.omit(pf) wrapper -> this omitts data with any N/A value in the record
+      all or nothing!!!!
+  
 ```{r Omitting NA Values}
 
 ```
@@ -154,6 +224,8 @@ Notes:
 
 ### Statistics 'by' Gender
 Notes:
+new function 'by'
+by(variable in question, the categorial variable, and the data in question)
 
 ```{r Statistics \'by\' Gender}
 
