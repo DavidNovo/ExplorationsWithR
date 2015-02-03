@@ -452,24 +452,72 @@ the instructor uses www_likes variable not the likes variable I am using; changi
 
 ### Box Plots
 Notes:
+ box plot:
+    the x-axis is the categorical variable, in this case male and female
+    the y-axis is our friend count, the variable under infestigation
+    
+The box plots below, hard to read, many outliers
+
+The interquartile range or IQR includes all of the values between the bottom and top of the boxes in the boxplot. 
+
+Visualization of the IQR with a normal probability distribution function with $\mu=1$μ=1 and $\sigma^2=1$σ2=1 (pdf). 
 
 ```{r Box Plots}
-
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender),
+      geom = 'boxplot')
 ```
 
 #### Adjust the code to focus on users who have friend counts between 0 and 1000.
 
 ```{r}
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender)),
+      outlier.colour = "yellow",
+      geom = 'boxplot')
 
+# this removes the outliers from the box plot
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender)),
+      outlier.size = 0,
+      geom = 'boxplot')
+
+
+# this uses layers, data not removed fro plot
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(xlim = NULL, ylim = c(0, 1000))
+
+# this removes data from plot
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot', ylim = c(c(0,1000))) 
 ```
 
 ***
 
 ### Box Plots, Quartiles, and Friendships
 Notes:
-
+Here is the summary for the data
+pf$gender: female
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0      37      96     242     244    4923 
+--------------------------------------------------------------------------------------- 
+pf$gender: male
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+      0      27      74     165     182    4917
+Relating the summary to the box plot:
+  1. the top of the box in the box plot matches the 3rd Qrt value
+  2. the median is the dark lint through teh box
+  3. the bottom of the box matches the 1st Qrty.
 ```{r Box Plots, Quartiles, and Friendships}
+qplot(x = gender, y = friend_count, 
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(xlim = NULL, ylim = c(0, 300))
 
+by(pf$friend_count, pf$gender, summary)
 ```
 
 #### On average, who initiated more friendships in our sample: men or women?
@@ -478,10 +526,16 @@ Response:
 Response:
 ```{r Friend Requests by Gender}
 
+qplot(x = gender, y = friendships_initiated, 
+      data = subset(pf, !is.na(gender)),
+      geom = 'boxplot') +
+  coord_cartesian(xlim = NULL, ylim = c(0, 300))
+
+by(pf$friendships_initiated, pf$gender, summary)
 ```
 
 Response:
-
+I used a by() function to summarize the data.  I compared the mean of male and female.
 ***
 
 ### Getting Logical
