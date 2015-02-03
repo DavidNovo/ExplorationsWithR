@@ -424,22 +424,29 @@ qplot(x = friend_count, data = subset(pf, !is.na(gender)),
 ### Likes on the Web
 Notes:
 An example of using frequency polygons
+ breaks are where the values or lines are placed on the x-axis
+ lim defines how long the x-axis is
+ 
+
+note, likes is a count variable, so the x-graph should be on a discrete scale
 
 ```{r Likes on the Web}
-qplot(x = likes, data = subset(pf, !is.na(likes)),
+qplot(x = www_likes, data = subset(pf, !is.na(www_likes)),
       binwidth = 10, geom = 'freqpoly', color = gender) +
   scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 50))
 
-qplot(x = likes, data = subset(pf, !is.na(likes)),
+qplot(x = www_likes, data = subset(pf, !is.na(www_likes)),
       binwidth = 10, geom = 'freqpoly', color = gender) +
   scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 25))
 
-qplot(x = likes, data = subset(pf, !is.na(likes)),
+qplot(x = www_likes, data = subset(pf, !is.na(www_likes)),
       binwidth = 10, geom = 'freqpoly', color = gender) +
   scale_x_continuous(lim = c(0,100), breaks = seq(0, 100, 25))
 
+# time for more numeric summary
+by(pf$www_likes, pf$gender, sum)
 ```
-
+the instructor uses www_likes variable not the likes variable I am using; changing it now
 
 ***
 
