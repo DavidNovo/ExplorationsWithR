@@ -19,6 +19,7 @@ facebookData <- read.csv('pseudo_facebook.tsv', sep='\t')
 
 facebookData2 <- read.delim('pseudo_facebook.tsv')
 
+pf <- read.csv('pseudo_facebook.tsv', sep='\t')
 ```
 
 ***
@@ -225,38 +226,66 @@ Two ways, na wrapper and by subset
 ### Statistics 'by' Gender
 Notes:
 new function 'by'
-by(variable in question, the categorial variable, and the data in question)
+by(variable in question, the categorial variable, function to use)
 
+
+Sample and error
+given this:
+by(pf$freind_count, pf$gender, summary)
+
+I get this error:
+Error in tapply(seq_len(0L), list(`pf$gender` = c(2L, 1L, 2L, 1L, 2L,  : 
+  arguments must have same length
+
+Reason:
+I have a typo in the first field name.  Therefore the first field name does not exist and the list of values for that fiels has lenght=0, this is not equal to the length of thew list of the field 'gender'
 ```{r Statistics \'by\' Gender}
-
+table(pf$gender)
+by(pf$friend_count, pf$gender, summary)
 ```
 
 #### Who on average has more friends: men or women?
 Response:
-
+Women
 #### What's the difference between the median friend count for women and men?
 Response:
-
+22
 #### Why would the median be a better measure than the mean?
 Response:
+We have long tail data.  A few extreme cases increwases the average.  The median is resistance to long tail distortions.  The mean measures the half way point of the data; think the middle number in a sorted list. Given these numbers, 3, 5, and 12. The median is 5.
 
+Mean is another work for average.
 ***
 
 ### Tenure
 Notes:
-
+More of histograms and parameters:
+  color determines the color of the outline of objects in a plot
+  fill determines athe color of a the area inside objects in a plot
+   
 ```{r Tenure}
-
+ggplot(aes(x = tenure), data = pf) + 
+   geom_histogram(binwidth = 30, color = 'black', fill = '#099DD9')
 ```
+
 
 ***
 
 #### How would you create a histogram of tenure by year?
 
 ```{r Tenure Histogram by Year}
-
+ggplot(aes(x = tenure), data = pf) + 
+   geom_histogram(binwidth = 365, color = 'black', fill = '#099DD9') +
+    scale_x_continuous(limits = c(0, 3650),
+                     breaks = seq(0, 3650, 365)) 
 ```
+Since the data measures tenure in days, I changes the scale of the histogram to sort data my 365 days.  The binwidth is now 365 days, which is one year, and the breaks for the x-axis are every year.
 
+The instructor took a different approach:
+```{r Tenure Histogram by Year according to instructor}
+qplot(x = tenure/365, data = pf,
+       color = I('black'), fill=I('#F79420')) +
+  scale_x_continuous(breaks = seq(1,7,1), lim = c(0,7))
 ***
 
 ### Labeling Plots
@@ -270,14 +299,28 @@ Notes:
 
 ### User Ages
 Notes:
-
+the binwidth groups values along the x-axis.  Since we are talking aobut ages, a width on one is meaningful.
 ```{r User Ages}
+qplot(x = age, data = pf, binwidth = 1,
+       color = I('black'), fill=I('#F79420')) +
+  scale_x_continuous(breaks = seq(0,100,10), lim = c(0,100))
 
+# also this...
+qplot(x = age, data = pf, binwidth = 1,
+       color = I('black'), fill=I('#F79420')) +
+  scale_x_discrete(breaks = seq(0,100,10))
+
+# to find goos limits for the x-axis use..
+summary(pf$age)
 ```
-
+When I run 
+  summary(pf$age)
+I get:
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  13.00   20.00   28.00   37.28   50.00  113.00 
 #### What do you notice?
 Response:
-
+First, this data takes a long tail format:  There is a large bump of users under 30; however there are users that are over 80 years old.
 ***
 
 ### The Spread of Memes
@@ -292,7 +335,53 @@ Notes:
 
 ### Transforming Data
 Notes:
+First here is a sample histogram:
+```{r transforming data}
+qplot(x = friend_count, data = pf)
 
+summary(pf$friend_count)
+
+# this is a ten fold scale, like pH scale
+# one step more, 10 fold increase
+summary(log10(pf$friend_count + 1))
+
+summary(sqrt(pf$friend_count))
+```
+Creating three histograms:
+  1. friend count
+  2. friend count transformed using log10
+  3. friend count transformed using sqrt
+ 
+ summary(pf$friend_count)
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    0.0    31.0    82.0   196.4   206.0  4923.0 
+```{r transformaing data and histograms}
+install.packages('gridExtra') 
+library(gridExtra) 
+
+qplot(x = friend_count, data = pf, binwidth = 20,
+       color = I('black'), fill=I('#F79420')) +
+  scale_x_continuous(breaks = seq(0,5000,20), lim = c(0,5000))
+
+
+qplot(x = log10(pf$friend_count + 1), data = pf, binwidth = 10,
+       color = I('black'), fill=I('#F79420')) +
+ scale_x_log10()
+
+qplot(x = sqrt(pf$friend_count), data = pf, binwidth = 20,
+       color = I('black'), fill=I('#F79420')) +
+  scale_x_sqrt()
+
+# what the instructor did:
+install.packages('gridExtra')
+library(gridExtra)
+
+p1 <- qplot(x= friend_count, data =pf)
+p2 <- qplot(x = log10(friend_count +1), data = pf)
+p3 <- qplot(x = sqrt(friend_count), data = pf)
+
+grid.arrange(p1,p2,p3, ncol = 1)
+``` 
 ***
 
 ### Add a Scaling Layer
