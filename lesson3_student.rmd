@@ -386,8 +386,16 @@ grid.arrange(p1,p2,p3, ncol = 1)
 
 ### Add a Scaling Layer
 Notes:
-
+these two graphs use the same data and create the same type of graph
 ```{r Add a Scaling Layer}
+library(ggplot2)
+
+qplot(x = log10(friend_count), data = pf)
+
+# the x-axis is labeled as friend_count
+ggplot(aes(x = friend_count), data = pf) +
+  geom_histogram() +
+  scale_x_log10()
 
 ```
 
@@ -397,6 +405,17 @@ Notes:
 ### Frequency Polygons
 
 ```{r Frequency Polygons}
+# a histogram
+qplot(x = friend_count, data = subset(pf, !is.na(gender)),
+      binwidth = 10) +
+  scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 50)) +
+  facet_wrap(~gender)
+
+# now a polygon
+qplot(x = friend_count, data = subset(pf, !is.na(gender)),
+      binwidth = 10, geom = 'freqpoly', color = gender) +
+  scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 50)) 
+
 
 ```
 
@@ -404,8 +423,20 @@ Notes:
 
 ### Likes on the Web
 Notes:
+An example of using frequency polygons
 
 ```{r Likes on the Web}
+qplot(x = likes, data = subset(pf, !is.na(likes)),
+      binwidth = 10, geom = 'freqpoly', color = gender) +
+  scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 50))
+
+qplot(x = likes, data = subset(pf, !is.na(likes)),
+      binwidth = 10, geom = 'freqpoly', color = gender) +
+  scale_x_continuous(lim = c(0,1000), breaks = seq(0, 100, 25))
+
+qplot(x = likes, data = subset(pf, !is.na(likes)),
+      binwidth = 10, geom = 'freqpoly', color = gender) +
+  scale_x_continuous(lim = c(0,100), breaks = seq(0, 100, 25))
 
 ```
 
