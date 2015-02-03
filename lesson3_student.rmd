@@ -540,18 +540,38 @@ I used a by() function to summarize the data.  I compared the mean of male and f
 
 ### Getting Logical
 Notes:
+Ok, using simple math and statistics.
 
 ```{r Getting Logical}
+# creating a new variable in the data frame with NA nalues
+mobile_check_in <- NA
 
+pf$mobile_check_in <- ifelse(pf$mobile_likes > 0, 1, 0)
+pf$mobile_check_in <- factor(pf$mobile_check_in)
+summary(pf$mobile_check_in)
+
+# all records
+length(pf$mobile_check_in)
+
+# number of mobile checkins, my attempts
+# I was having problem with the logical check
+checkins <- ifelse(pf$mobile_check_in > 0, 1, 0)
+length(checkins)
+
+# one way to solve
+sum(pf$mobile_check_in == 1)/length(pf$mobile_check_in)
 ```
 
 Response:
-
+I was having problem with the logical check
+checkins <- ifelse(pf$mobile_check_in > 0, 1, 0)
+length(checkins)
 ***
 
 ### Analyzing One Variable
 Reflection:
 
+Analyzing one variable is mor comples than I imigned.  Also there is no best graph.  The graph to use depends on what you want to see.
 ***
 
 Click **KnitHTML** to see all of your hard work and to have an html
