@@ -177,7 +177,7 @@ qplot(x = friend_count, data = facebookData2) +
 
 ### Exploring with Bin Width
 Notes:
-What is bin width?  Threa the x-axix as a series of bins, each values on that axis contains items, guesses, for that values of x.  
+What is bin width?  The the x-axix as a series of bins, each values on that axis contains items, guesses, for that values of x.  
 
 Each value on the x-asix is a bucket containning positives, values, items.  The y-axis is how many items are in each x-axis bucket
 ***
