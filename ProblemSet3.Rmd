@@ -1,0 +1,84 @@
+---
+title: "ProblemSet3"
+author: "David Novogrodsky"
+date: "Monday, February 09, 2015"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+summary(cars)
+```
+
+You can also embed plots, for example:
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+Load ggplot and then load the diamonds data set that comes with ggplot.
+```{r}
+library(ggplot2)
+data(diamonds)
+
+summary(diamonds)
+diamonds$color
+```
+Make a histogram of the price of the diamonds data set
+```{r}
+library(ggplot2)
+qplot(x = price, data = diamonds) +
+  scale_x_discrete(breaks=1:20000)
+
+qplot(x = price, data = diamonds, binwidth = 100) +
+  scale_x_continuous(breaks=1:20000,100)
+  
+
+```
+Now some summary statistics
+mean is another term for average
+median is the middle number in a sortedlist
+```{r}
+mean(diamonds$price)
+median(diamonds$price)
+```
+The histogram is a long-tail variety.  The mean is much higher than the median.  So if a histogram is long-tail then the mean will be higher than the median??
+
+What happens if the mean equals the median?
+
+Now to look at the price and amount more closely
+```{r}
+summary(diamonds$price < 500)
+summary(diamonds$price < 250)
+summary(diamonds$price >= 15000)
+
+```
+
+now explore the largest peak in the histogram made earlier
+might have to adjust the values to see it better
+```{r}
+qplot(x = price, data = diamonds, binwidth = 100) +
+  scale_x_continuous(limits = c(0, 5000),
+                     breaks=1:20000,100)
+
+
+qplot(x = price, data = diamonds, binwidth = 100) +
+  scale_x_continuous(limits = c(0, 5000),
+                     breaks=1:20000,200)
+
+qplot(x = price, data = diamonds, binwidth = 10) +
+  scale_x_continuous(limits = c(0, 5000),
+                     breaks=1:20000,250)
+
+qplot(x = price, data = diamonds, binwidth = 1, ) +
+  scale_x_continuous(limits = c(0, 5000),
+                     breaks=1:20000,250) 
+                     
+```
+
+
