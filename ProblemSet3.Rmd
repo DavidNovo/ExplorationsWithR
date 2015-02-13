@@ -61,7 +61,8 @@ summary(diamonds$price >= 15000)
 
 now explore the largest peak in the histogram made earlier
 might have to adjust the values to see it better
-```{r}
+```{r explore the largest peak}
+library(ggplot2)
 qplot(x = price, data = diamonds, binwidth = 100) +
   scale_x_continuous(limits = c(0, 5000),
                      breaks=1:20000,100)
@@ -79,6 +80,42 @@ qplot(x = price, data = diamonds, binwidth = 1, ) +
   scale_x_continuous(limits = c(0, 5000),
                      breaks=1:20000,250) 
                      
+qplot(x = price, data = diamonds, binwidth = 1, ) +
+  scale_x_continuous(limits = c(0, 2000),
+                     breaks=1:20000,250) 
+
 ```
 
+Now break out the histogram of diamonds by cut.
+I will create 5 histograms in seperate panels on the resulting plot.
+```{r break out histogram using facet_wrap}
+qplot(x = price, data = diamonds, binwidth = 1, ) +
+  scale_x_continuous(limits = c(0, 2000),
+                     breaks=1:20000,250) +
+  facet_wrap(~cut, ncol=1)
 
+by(diamonds$price, diamonds$cut, summary)
+```
+The shape of the broken out, or faceted histograms, looks very similiar to the original histogram.  But the first two histogramsa, the ones for fair and good look uniform, not long-tail
+
+ Look up the documentation for facet_wrap in R Studio.
+ Then, scroll back up and add a parameter to facet_wrap so that
+ the y-axis in the histograms is not fixed. You want the y-axis to
+ be different for each histogram.
+ 
+ Use free scales for clarification in histograms
+ 
+```{r using free scale for y-axis}
+qplot(x = price, data = diamonds, binwidth = 1, ) +
+  scale_x_continuous(limits = c(0, 2000),
+                     breaks=1:20000,250) +
+  facet_wrap(~cut, ncol=1, scales = "free")
+```
+
+```{r using log10 for the x-axis}
+qplot(x = price/carat, data = diamonds, binwidth = 1 ) +
+  scale_x_continuous(limits = c(0, 2000),
+                     breaks=1:20000,10) +
+  facet_wrap(~cut, ncol=2, scales = "free")
+
+```
